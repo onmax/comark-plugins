@@ -81,29 +81,15 @@ test("the playground puts comark-code's buttons on code blocks, and actions from
   await expect(preview.getByRole("button", { name: "Run" })).toBeAttached();
 });
 
-test("a package's playground examples each open in the playground, and their heading opens the first", async ({
-  page,
-}) => {
-  await page.goto("/annotate/");
-  const pages = page.locator(".sidebar .pages");
-  await expect(pages.getByRole("link", { name: "Examples" })).toHaveAttribute(
-    "href",
-    /^\/play\/#preset=annotate-/,
-  );
-  await pages.getByRole("link", { name: "Side notes" }).click();
-  await expect(page).toHaveURL(/\/play\/#preset=annotate-/);
-  await expect(page.locator(".sidebar .pages a[aria-current]")).toHaveText("Side notes");
-});
-
 test("search opens with Ctrl+K and goes to the heading you pick", async ({ page }) => {
   await page.goto("/");
   await page.keyboard.press("Control+k");
   const field = page.getByRole("combobox", { name: "Search the docs" });
   await expect(field).toBeFocused();
   await field.fill("side notes");
-  await expect(page.getByRole("option").first()).toContainText("annotate › Guides");
+  await expect(page.getByRole("option").first()).toContainText("Components › Annotate");
   await field.press("Enter");
-  await expect(page).toHaveURL(/\/annotate\/guides\/#side-notes$/);
+  await expect(page).toHaveURL(/\/annotate\/#side-notes$/);
   await page.keyboard.press("Control+k");
   await field.fill("zzzz");
   await expect(page.getByRole("status")).toHaveText("No page or heading matches.");
